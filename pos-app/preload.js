@@ -1,0 +1,56 @@
+// preload.js - جسر الأمان بين الواجهة وعمليات النظام في Electron
+const { contextBridge, ipcRenderer } = require("electron");
+
+const channels = {
+  login: "auth/login",
+  dashboard: "dashboard/metrics",
+  searchProducts: "pos/searchProducts",
+  createSale: "pos/createSale",
+  listProducts: "products/list",
+  saveProduct: "products/save",
+  deleteProduct: "products/delete",
+  importProducts: "products/importCsv",
+  exportProducts: "products/exportCsv",
+  listContacts: "contacts/list",
+  saveContact: "contacts/save",
+  deleteContact: "contacts/delete",
+  exportContacts: "contacts/export",
+  listExpenses: "expenses/list",
+  saveExpense: "expenses/save",
+  deleteExpense: "expenses/delete",
+  salesReport: "reports/sales",
+  exportReport: "reports/export",
+  getSettings: "settings/get",
+  saveSettings: "settings/save",
+  uploadLogo: "settings/uploadLogo",
+  listUsers: "users/list",
+  saveUser: "users/save",
+  deleteUser: "users/delete"
+};
+
+contextBridge.exposeInMainWorld("posAPI", {
+  login: (payload) => ipcRenderer.invoke(channels.login, payload),
+  getDashboardMetrics: () => ipcRenderer.invoke(channels.dashboard),
+  searchProducts: (query) => ipcRenderer.invoke(channels.searchProducts, query),
+  createSale: (payload) => ipcRenderer.invoke(channels.createSale, payload),
+  listProducts: () => ipcRenderer.invoke(channels.listProducts),
+  saveProduct: (payload) => ipcRenderer.invoke(channels.saveProduct, payload),
+  deleteProduct: (id) => ipcRenderer.invoke(channels.deleteProduct, id),
+  importProducts: () => ipcRenderer.invoke(channels.importProducts),
+  exportProducts: () => ipcRenderer.invoke(channels.exportProducts),
+  listContacts: (type) => ipcRenderer.invoke(channels.listContacts, type),
+  saveContact: (payload) => ipcRenderer.invoke(channels.saveContact, payload),
+  deleteContact: (payload) => ipcRenderer.invoke(channels.deleteContact, payload),
+  exportContacts: (type) => ipcRenderer.invoke(channels.exportContacts, type),
+  listExpenses: () => ipcRenderer.invoke(channels.listExpenses),
+  saveExpense: (payload) => ipcRenderer.invoke(channels.saveExpense, payload),
+  deleteExpense: (id) => ipcRenderer.invoke(channels.deleteExpense, id),
+  salesReport: (payload) => ipcRenderer.invoke(channels.salesReport, payload),
+  exportReport: (payload) => ipcRenderer.invoke(channels.exportReport, payload),
+  getSettings: () => ipcRenderer.invoke(channels.getSettings),
+  saveSettings: (payload) => ipcRenderer.invoke(channels.saveSettings, payload),
+  uploadLogo: () => ipcRenderer.invoke(channels.uploadLogo),
+  listUsers: () => ipcRenderer.invoke(channels.listUsers),
+  saveUser: (payload) => ipcRenderer.invoke(channels.saveUser, payload),
+  deleteUser: (id) => ipcRenderer.invoke(channels.deleteUser, id)
+});
